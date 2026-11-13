@@ -82,7 +82,7 @@ export default function TestDomePage() {
       >
         <color attach="background" args={['#0a0a0a']} />
         
-        <Environment files="/hdris/paul_lobe_haus_4k.hdr" environmentIntensity={1.0} background={false} />
+        <Environment preset="studio" environmentIntensity={1.0} background={false} />
 
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow />

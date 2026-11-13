@@ -442,13 +442,15 @@ export default function CarScene() {
     }
   }, [cameraPreset, cameraPresetVersion])
 
-  // Map studio environment preset to HDR files
-  const envFile =
+  // Map studio environment preset to Drei built-in environment presets
+  const envPreset =
     environmentPreset === 'Pacific Coast'
-      ? '/hdris/paul_lobe_haus_4k.hdr'
+      ? 'sunset'
       : environmentPreset === 'Alpine Pass'
-        ? '/hdris/scene.hdr'
-        : '/hdris/afrikaans_church_exterior_1k.exr'
+        ? 'forest'
+        : environmentPreset === 'Neon Midnight'
+          ? 'night'
+          : 'studio'
 
   return (
   <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -477,8 +479,7 @@ export default function CarScene() {
 
         {/* Reflections and ambient light only, no visible background */}
         <Environment
-          files={envFile}
-          // environmentIntensity={ambienceMode === 'day' ? 0.8 : 0.35}
+          preset={envPreset}
         />
 
         {/* One main light for shadows and a soft fill */}
