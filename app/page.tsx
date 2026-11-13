@@ -1,69 +1,72 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+import dynamic from 'next/dynamic'
+import LeftSidebar from '@/components/LeftSidebar'
+import RightControls from '@/components/RightControls'
+import CameraFooterBar from '@/components/CameraFooterBar'
+import BuildSummaryModal from '@/components/BuildSummaryModal'
+import { useConfiguratorStore } from '@/store/useConfiguratorStore'
+
+// Dynamically import the 3D Canvas with SSR disabled to prevent WebGL server rendering issues
+const CarScene = dynamic(() => import('@/components/CarScene'), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-surface gap-3 text-on-surface">
+      <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+      <span className="font-label-caps text-label-caps uppercase tracking-widest text-secondary">
+        Initializing 3D Studio...
+      </span>
     </div>
-  );
+  ),
+})
+
+export default function Page() {
+  const ambienceMode = useConfiguratorStore((s) => s.ambienceMode)
+
+  return (
+    <main className="relative w-screen h-screen overflow-hidden select-none">
+      {/* 1. ARCHITECTURAL DAYLIGHT STUDIO BACKGROUND SIMULATION */}
+      <div
+        className={`absolute inset-0 z-0 transition-colors duration-700 pointer-events-none overflow-hidden ${
+          ambienceMode === 'day'
+            ? 'bg-gradient-to-b from-[#f2f3f5] via-[#eaecf0] to-[#dfe3e8]'
+            : 'bg-gradient-to-b from-[#0f1117] via-[#141721] to-[#1c202c]'
+        }`}
+      >
+        {/* Studio Overhead Diffused Lighting Rings */}
+        <div
+          className={`absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[340px] rounded-full blur-3xl pointer-events-none transition-opacity duration-700 ${
+            ambienceMode === 'day' ? 'bg-white/70 opacity-80' : 'bg-blue-400/10 opacity-30'
+          }`}
+        />
+        <div
+          className={`absolute top-1/4 -right-20 w-[600px] h-[300px] rounded-full blur-2xl pointer-events-none transition-opacity duration-700 ${
+            ambienceMode === 'day' ? 'bg-white/60 opacity-70' : 'bg-indigo-500/10 opacity-20'
+          }`}
+        />
+
+        {/* Horizon Line & Subtle Architectural Studio Grid */}
+        <div className="absolute inset-x-0 top-[58%] h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent" />
+        <div className="absolute inset-0 opacity-[0.035] bg-[radial-gradient(#191c1e_1px,transparent_1px)] [background-size:24px_24px]" />
+      </div>
+
+      {/* 2. REAL-TIME 3D CAR CANVAS (Full bleed) */}
+      <div className="absolute inset-0 z-10">
+        <CarScene />
+      </div>
+
+      {/* 3. THREE REQUIRED UI ELEMENTS:
+          - Left sidebar (with dedicated toggle button)
+          - Right sidebar (with dedicated toggle button)
+          - Camera footer bar (kept unchanged)
+          (Header omitted completely per specification)
+      */}
+      <LeftSidebar />
+      <RightControls />
+      <CameraFooterBar />
+
+      {/* 4. SPECIFICATION PASSPORT MODAL */}
+      <BuildSummaryModal />
+    </main>
+  )
 }

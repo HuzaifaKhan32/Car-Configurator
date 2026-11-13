@@ -1,26 +1,128 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-surface: #f7f9fc;
+  --color-surface-dim: #d8dadd;
+  --color-surface-bright: #f7f9fc;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f4f7;
+  --color-surface-container: #eceef1;
+  --color-surface-container-high: #e6e8eb;
+  --color-surface-container-highest: #e0e3e6;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #45474b;
+  --color-inverse-surface: #2d3133;
+  --color-inverse-on-surface: #eff1f4;
+  --color-outline: #76777b;
+  --color-outline-variant: #c6c6cb;
+  --color-surface-tint: #5c5e65;
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #191c22;
+  --color-on-primary-container: #81848b;
+  --color-inverse-primary: #c4c6ce;
+  --color-secondary: #575f6c;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #d8e0ef;
+  --color-on-secondary-container: #5b6370;
+  --color-secondary-fixed: #dbe3f2;
+  --color-secondary-fixed-dim: #bfc7d6;
+  --color-on-secondary-fixed: #141c27;
+  --color-tertiary-container: #0d1c2e;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    font-family: var(--font-inter, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+    background: #f7f9fc;
+    color: #191c1e;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Material Symbols Outlined Icon Font */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography styles matching DESIGN.md & code.html */
+.font-headline-sm {
+  font-family: var(--font-geist, 'Geist', sans-serif);
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+}
+
+.font-headline-md {
+  font-family: var(--font-geist, 'Geist', sans-serif);
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.font-label-caps {
+  font-family: var(--font-geist, 'Geist', sans-serif);
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.font-label-md {
+  font-family: var(--font-geist, 'Geist', sans-serif);
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.005em;
+  font-weight: 500;
+}
+
+.font-body-sm {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0em;
+  font-weight: 400;
+}
+
+.font-body-md {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -0.005em;
+  font-weight: 400;
+}
+
+.font-metric-val {
+  font-family: var(--font-geist, 'Geist', sans-serif);
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hide scrollbar globally */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
 }
